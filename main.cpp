@@ -5,7 +5,8 @@
 #include <iostream>
 #define PI 3.14159
 
-double getRandom( double min, double max )
+//function that generates random doubles from within a range
+double getRandom( double min, double max ) 
 {
 	std::uniform_real_distribution<double> dist(min, max);
 	std::mt19937 rng;
@@ -13,7 +14,10 @@ double getRandom( double min, double max )
 	return dist(rng);
 }
 
-std::vector<double> alphaGenerate( double mu_a, double mu_b, double t_1, double t_2, double p )
+//function that computes the symmetry equation
+//C(H(-p)^*C^{\dagger}+H(p)=\alpha(p) at different
+//points in the parameter space
+std::vector<double> alphaGenerate( double mu_a, double mu_b, double t_1, double t_2, double p ) //function that computes the 
 {
 	double t_0, del_t, mu_0, del_mu; 
 	mu_0 = ( mu_a + mu_b )/2.0;
@@ -64,7 +68,7 @@ int main()
 	double t_2_min = -4.0, t_2_max = 4.0;
 	double ball_radius = 1.0e-3;
 
-	
+	//generate initial point in param space	
 	parameters[0] = getRandom( mu_a_min, mu_a_max );
 	parameters[1] = getRandom( mu_b_min, mu_b_max );
 	parameters[2] = getRandom( t_1_min, t_1_max );
@@ -72,6 +76,7 @@ int main()
 	p = getRandom( -PI, PI ); 
 	
 	int stopFlag = 1, holdFlag00 = 1, holdFlag01 = 1, holdFlag11 = 1;
+	//compute inital alpha
 	std::vector<double> alpha = alphaGenerate( parameters[0], parameters[1], parameters[2], parameters[3], p ), alphaTemp;
 	
 	double choice_prob;
@@ -156,6 +161,7 @@ int main()
 			}
 		}
 
+		//check if alpha is close to zero
 		if (( alpha[0] < 1.0e-4 ) && ( alpha[1] < 1.0e-4 ) && ( alpha[2] < 1.0e-4 ) && ( alpha[3] < 1.0e-4 ))
 		{
 			stopFlag = 0;
